@@ -508,14 +508,14 @@ void OBCameraNode::setupPublishers() {
       continue;
     }
     std::string name = stream_name_[stream_index];
-    std::string topic_name = "/" + camera_name_ + "/" + name + "/image_raw";
+    std::string topic_name = name + "/image_raw";
     image_transport::SubscriberStatusCallback it_subscribed_cb =
         boost::bind(&OBCameraNode::imageSubscribedCallback, this, stream_index);
     image_transport::SubscriberStatusCallback it_unsubscribed_cb =
         boost::bind(&OBCameraNode::imageUnsubscribedCallback, this, stream_index);
     image_publishers_[stream_index] =
         image_transport.advertise(topic_name, 1, it_subscribed_cb, it_unsubscribed_cb);
-    topic_name = "/" + camera_name_ + "/" + name + "/camera_info";
+    topic_name = name + "/camera_info";
     ros::SubscriberStatusCallback image_subscribed_cb =
         boost::bind(&OBCameraNode::imageSubscribedCallback, this, stream_index);
     ros::SubscriberStatusCallback image_unsubscribed_cb =
@@ -580,30 +580,30 @@ void OBCameraNode::setupPublishers() {
   }
   if (enable_stream_[DEPTH] && enable_stream_[INFRA0]) {
     depth_to_other_extrinsics_publishers_[INFRA0] =
-        nh_.advertise<orbbec_camera::Extrinsics>("/" + camera_name_ + "/depth_to_ir", 1, true);
+        nh_.advertise<orbbec_camera::Extrinsics>("depth_to_ir", 1, true);
   }
   if (enable_stream_[DEPTH] && enable_stream_[COLOR]) {
     depth_to_other_extrinsics_publishers_[COLOR] =
-        nh_.advertise<orbbec_camera::Extrinsics>("/" + camera_name_ + "/depth_to_color", 1, true);
+        nh_.advertise<orbbec_camera::Extrinsics>("depth_to_color", 1, true);
   }
   if (enable_stream_[DEPTH] && enable_stream_[INFRA1]) {
     depth_to_other_extrinsics_publishers_[INFRA1] =
-        nh_.advertise<orbbec_camera::Extrinsics>("/" + camera_name_ + "/depth_to_left_ir", 1, true);
+        nh_.advertise<orbbec_camera::Extrinsics>("depth_to_left_ir", 1, true);
   }
   if (enable_stream_[DEPTH] && enable_stream_[INFRA2]) {
     depth_to_other_extrinsics_publishers_[INFRA2] = nh_.advertise<orbbec_camera::Extrinsics>(
-        "/" + camera_name_ + "/depth_to_right_ir", 1, true);
+        "depth_to_right_ir", 1, true);
   }
   if (enable_stream_[DEPTH] && enable_stream_[ACCEL]) {
     depth_to_other_extrinsics_publishers_[ACCEL] =
-        nh_.advertise<orbbec_camera::Extrinsics>("/" + camera_name_ + "/depth_to_accel", 1, true);
+        nh_.advertise<orbbec_camera::Extrinsics>("depth_to_accel", 1, true);
   }
   if (enable_stream_[DEPTH] && enable_stream_[GYRO]) {
     depth_to_other_extrinsics_publishers_[GYRO] =
-        nh_.advertise<orbbec_camera::Extrinsics>("/" + camera_name_ + "/depth_to_gyro", 1, true);
+        nh_.advertise<orbbec_camera::Extrinsics>("depth_to_gyro", 1, true);
   }
   filter_status_pub_ =
-      nh_.advertise<std_msgs::String>("/" + camera_name_ + "/filter_status", 1, true);
+      nh_.advertise<std_msgs::String>("filter_status", 1, true);
   std_msgs::String msg;
   msg.data = filter_status_.dump(2);
   filter_status_pub_.publish(msg);
